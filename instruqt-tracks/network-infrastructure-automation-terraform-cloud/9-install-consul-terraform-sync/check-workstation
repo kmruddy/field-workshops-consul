@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # azure resources
-rg=$(terraform output -state /root/terraform/vnet/terraform.tfstate resource_group_name)
+rg=$(echo $(terraform output -state /root/terraform/vnet/terraform.tfstate resource_group_name) | tr -d '"')
 echo "Checking consul-terraform-sync instance"
 status=$(az vm get-instance-view -g $rg --name consul-terraform-sync | jq -r .provisioningState)
 echo $status

@@ -119,28 +119,28 @@ n=0
 until [ $n -ge 5 ]; do
   echo "Fetching PANW..."
   echo "firewall_ip = ${terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIP}"
-  firewall_ip=$(terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIP)
-  pa_username=$(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_username)
-  pa_password=$(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_password)
+  firewall_ip=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIP) | tr -d '"')
+  pa_username=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_username) | tr -d '"')
+  pa_password=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_password) | tr -d '"')
   if [ "$(curl -sk -o /dev/null  -u ${pa_username}:${pa_password} -w ''%{http_code}'' https://${firewall_ip}/restapi/v9.1/Device/VirtualSystems)" = "200" ]; then
       break
   fi
   n=$[$n+1]
   sleep 60
 done
-#if [ $n -ge 10 ]; then
-#  fail-message "Could not check PANW."
-#  exit 1
-#fi
+if [ $n -ge 10 ]; then
+  fail-message "Could not check PANW."
+  exit 1
+fi
 
 #panw
 echo "Checking F5 BIG-IP"
 n=0
 until [ $n -ge 5 ]; do
   echo "Fetching BIG-IP..."
-  f5_url=$(terraform output -state /root/terraform/bigip/terraform.tfstate mgmt_url)
-  f5_username=$(terraform output -state /root/terraform/bigip/terraform.tfstate f5_username)
-  f5_password=$(terraform output -state /root/terraform/bigip/terraform.tfstate f5_password)
+  f5_url=$(echo $(terraform output -state /root/terraform/bigip/terraform.tfstate mgmt_url) | tr -d '"')
+  f5_username=$(echo $(terraform output -state /root/terraform/bigip/terraform.tfstate f5_username) | tr -d '"')
+  f5_password=$(echo $(terraform output -state /root/terraform/bigip/terraform.tfstate f5_password) | tr -d '"')
   f5_status=$(curl -s -k -u "${f5_username}:${f5_password}" -H "Content-Type: application/json" -o /dev/null -w "%{http_code}" "${f5_url}/mgmt/tm/cm/device/")
   if [ "${f5_status}" = "200" ]; then
     break
@@ -148,13 +148,13 @@ until [ $n -ge 5 ]; do
   n=$[$n+1]
   sleep 60
 done
-#if [ $n -ge 5 ]; then
-#  fail-message "Could not check BIG-IP."
-#  exit 1
-#fi
+if [ $n -ge 5 ]; then
+  fail-message "Could not check BIG-IP."
+  exit 1
+fi
 
 #wait for network device boot up
 echo "Network Devices up! Waiting for init processes..."
-#sleep 300
+sleep 300
 
 exit 0

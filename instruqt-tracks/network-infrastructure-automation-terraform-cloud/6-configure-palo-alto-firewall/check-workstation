@@ -1,9 +1,9 @@
 #!/bin/sh
 
 #ip & creds
-firewall_ip=$(terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIP)
-pa_username=$(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_username)
-pa_password=$(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_password)
+firewall_ip=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIP) | tr -d '"')
+pa_username=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_username) | tr -d '"')
+pa_password=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_password) | tr -d '"')
 
 #check fw
 pa_addr_group=$(curl -sk -u ${pa_username}:${pa_password} "https://${firewall_ip}/restapi/v9.1/Objects/AddressGroups?location=vsys&vsys=vsys1&name=cts-addr-grp-web" | jq -r '.result.entry[0]["@name"]')

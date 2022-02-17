@@ -15,18 +15,18 @@ set-workdir /root/terraform/panw-config
 #cd /root/terraform/panw-vm
 #terraform output >> /info.txt
 
-bastion_ip=$(terraform output -state /root/terraform/vnet/terraform.tfstate bastion_ip)
-firewall_ip=$(terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIP)
-firewall_mgmt_ip=$(terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIPURL)
-pa_username=$(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_username)
-pa_password=$(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_password)
+bastion_ip=$(echo $(terraform output -state /root/terraform/vnet/terraform.tfstate bastion_ip) | tr -d '"')
+firewall_ip=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIP) | tr -d '"')
+firewall_mgmt_ip=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIPURL) | tr -d '"')
+pa_username=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_username) | tr -d '"')
+pa_password=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_password) | tr -d '"')
 
-bigip_mgmt_url=$(terraform output -state /root/terraform/bigip/terraform.tfstate mgmt_url)
-f5_username=$(terraform output -state /root/terraform/bigip/terraform.tfstate f5_username)
-f5_password=$(terraform output -state /root/terraform/bigip/terraform.tfstate f5_password)
+bigip_mgmt_url=$(echo $(terraform output -state /root/terraform/bigip/terraform.tfstate mgmt_url) | tr -d '"')
+f5_username=$(echo $(terraform output -state /root/terraform/bigip/terraform.tfstate f5_username) | tr -d '"')
+f5_password=$(echo $(terraform output -state /root/terraform/bigip/terraform.tfstate f5_password) | tr -d '"')
 
-app_fqdn=$(terraform output -state /root/terraform/panw-vm/terraform.tfstate WebFQDN)
-app_ip=$(terraform output -state /root/terraform/panw-vm/terraform.tfstate WebIP)
+app_fqdn=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate WebFQDN) | tr -d '"')
+app_ip=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate WebIP) | tr -d '"')
 
 cat <<EOF > /access.md
 # Access Information
