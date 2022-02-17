@@ -3,7 +3,7 @@ output "mgmt_url" {
 }
 
 output "mgmt_ip" {
-#  value = azurerm_network_interface.dmz-nic.private_ip_address
+  #  value = azurerm_network_interface.dmz-nic.private_ip_address
   value = azurerm_public_ip.sip_public_ip.ip_address
 }
 
@@ -16,7 +16,7 @@ output "f5_username" {
 }
 
 output "f5_password" {
-  value = random_password.bigippassword.result
+  value = nonsensitive(random_password.bigippassword.result)
 }
 
 output "vip_internal_address" {
