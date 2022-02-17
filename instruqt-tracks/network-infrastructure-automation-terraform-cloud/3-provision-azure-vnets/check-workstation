@@ -4,7 +4,7 @@ sleep 10
 
 echo "Verifying Azure VNETs"
 
-rg=$(terraform output -state /root/terraform/vnet/terraform.tfstate resource_group_name)
+rg=$(echo $(terraform output -state /root/terraform/vnet/terraform.tfstate resource_group_name) | tr -d '"')
 vnet_count=$(az network vnet list -g "${rg}" | jq '. | length')
 
 if [ -z "$vnet_count" ]; then

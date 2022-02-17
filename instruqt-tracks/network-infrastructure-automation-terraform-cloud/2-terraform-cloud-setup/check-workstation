@@ -10,7 +10,7 @@ else
     terraform login 
 fi
 
-if [ -z "${$ORG}" ]
+if [ -z "${ORG}" ]
 then 
     echo "No Organization found. Please enter your desired Terraform Cloud Organization: \$ORG"
 fi
