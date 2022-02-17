@@ -47,7 +47,7 @@ resource "random_password" "pafwpassword" {
 }
 
 resource "azurerm_storage_account" "PAN_FW_STG_AC" {
-  name                     = join("", list("strgaccpafw", random_id.suffix.dec))
+  name                     = join("", tolist(["strgaccpafw", random_id.suffix.dec]))
   location                 = data.terraform_remote_state.vnet.outputs.resource_group_location
   resource_group_name      = data.terraform_remote_state.vnet.outputs.resource_group_name
   account_replication_type = "LRS"
@@ -59,7 +59,7 @@ resource "azurerm_public_ip" "PublicIP_0" {
   location            = data.terraform_remote_state.vnet.outputs.resource_group_location
   resource_group_name = data.terraform_remote_state.vnet.outputs.resource_group_name
   allocation_method   = "Static"
-  domain_name_label   = join("", list(var.FirewallDnsName, random_id.suffix.dec))
+  domain_name_label   = join("", tolist([var.FirewallDnsName, random_id.suffix.dec]))
 }
 
 resource "azurerm_public_ip" "PublicIP_1" {
@@ -67,7 +67,7 @@ resource "azurerm_public_ip" "PublicIP_1" {
   location            = data.terraform_remote_state.vnet.outputs.resource_group_location
   resource_group_name = data.terraform_remote_state.vnet.outputs.resource_group_name
   allocation_method   = "Static"
-  domain_name_label   = join("", list(var.WebServerDnsName, random_id.suffix.dec))
+  domain_name_label   = join("", tolist([var.WebServerDnsName, random_id.suffix.dec]))
 }
 
 resource "azurerm_network_interface" "VNIC0" {
@@ -77,7 +77,7 @@ resource "azurerm_network_interface" "VNIC0" {
   depends_on          = [azurerm_public_ip.PublicIP_0]
 
   ip_configuration {
-    name                          = join("", list("ipconfig", "0"))
+    name                          = join("", tolist(["ipconfig", "0"]))
     subnet_id                     = data.terraform_remote_state.vnet.outputs.mgmt_subnet
     private_ip_address_allocation = "static"
     private_ip_address            = var.IPAddressMgmtNetwork
@@ -85,7 +85,7 @@ resource "azurerm_network_interface" "VNIC0" {
   }
 
   tags = {
-    displayName = join("", list("NetworkInterfaces", "0"))
+    displayName = join("", tolist(["NetworkInterfaces", "0"]))
   }
 }
 
@@ -97,7 +97,7 @@ resource "azurerm_network_interface" "VNIC1" {
   enable_ip_forwarding = true
 
   ip_configuration {
-    name                          = join("", list("ipconfig", "1"))
+    name                          = join("", tolist(["ipconfig", "1"]))
     subnet_id                     = data.terraform_remote_state.vnet.outputs.internet_subnet
     private_ip_address_allocation = "static"
     private_ip_address            = var.IPAddressInternetNetwork
@@ -105,7 +105,7 @@ resource "azurerm_network_interface" "VNIC1" {
   }
 
   tags = {
-    displayName = join("", list("NetworkInterfaces", "1"))
+    displayName = join("", tolist(["NetworkInterfaces", "1"]))
   }
 }
 
@@ -117,14 +117,14 @@ resource "azurerm_network_interface" "VNIC2" {
   enable_ip_forwarding = true
 
   ip_configuration {
-    name                          = join("", list("ipconfig", "2"))
+    name                          = join("", tolist(["ipconfig", "2"]))
     subnet_id                     = data.terraform_remote_state.vnet.outputs.dmz_subnet
     private_ip_address_allocation = "static"
     private_ip_address            = var.IPAddressDmzNetwork
   }
 
   tags = {
-    displayName = join("", list("NetworkInterfaces", "2"))
+    displayName = join("", tolist(["NetworkInterfaces", "2"]))
   }
 }
 
@@ -136,14 +136,14 @@ resource "azurerm_network_interface" "VNIC3" {
   enable_ip_forwarding = true
 
   ip_configuration {
-    name                          = join("", list("ipconfig", "3"))
+    name                          = join("", tolist(["ipconfig", "3"]))
     subnet_id                     = data.terraform_remote_state.vnet.outputs.app_subnet
     private_ip_address_allocation = "static"
     private_ip_address            = var.IPAddressAppNetwork
   }
 
   tags = {
-    displayName = join("", list("NetworkInterfaces", "3"))
+    displayName = join("", tolist(["NetworkInterfaces", "3"]))
   }
 }
 
@@ -174,7 +174,7 @@ resource "azurerm_virtual_machine" "PAN_FW_FW" {
   }
 
   storage_os_disk {
-    name          = join("", list("vmPANW-${random_id.suffix.dec}", "-osDisk"))
+    name          = join("", tolist(["vmPANW-${random_id.suffix.dec}", "-osDisk"]))
     vhd_uri       = "${azurerm_storage_account.PAN_FW_STG_AC.primary_blob_endpoint}vhds/vmPANW-${random_id.suffix.dec}-${var.fwOffer}-${var.fwSku}.vhd"
     caching       = "ReadWrite"
     create_option = "FromImage"
