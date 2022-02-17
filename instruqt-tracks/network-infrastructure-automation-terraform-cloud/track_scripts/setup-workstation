@@ -116,8 +116,9 @@ echo "Running pre-flight checks..."
 #f5
 echo "Checking PANW FW"
 n=0
-until [ $n -ge 10 ]; do
+until [ $n -ge 5 ]; do
   echo "Fetching PANW..."
+  echo "firewall_ip = ${terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIP}"
   firewall_ip=$(terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIP)
   pa_username=$(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_username)
   pa_password=$(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_password)
@@ -127,10 +128,10 @@ until [ $n -ge 10 ]; do
   n=$[$n+1]
   sleep 60
 done
-if [ $n -ge 10 ]; then
-  fail-message "Could not check PANW."
-  exit 1
-fi
+#if [ $n -ge 10 ]; then
+#  fail-message "Could not check PANW."
+#  exit 1
+#fi
 
 #panw
 echo "Checking F5 BIG-IP"
@@ -147,13 +148,13 @@ until [ $n -ge 5 ]; do
   n=$[$n+1]
   sleep 60
 done
-if [ $n -ge 5 ]; then
-  fail-message "Could not check BIG-IP."
-  exit 1
-fi
+#if [ $n -ge 5 ]; then
+#  fail-message "Could not check BIG-IP."
+#  exit 1
+#fi
 
 #wait for network device boot up
 echo "Network Devices up! Waiting for init processes..."
-sleep 300
+#sleep 300
 
 exit 0
