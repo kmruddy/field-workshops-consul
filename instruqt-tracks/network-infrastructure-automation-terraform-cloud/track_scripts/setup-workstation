@@ -94,12 +94,14 @@ EOF
 nohup terraform apply -auto-approve 2>&1 | tee nohup.out &
 
 #f5
+echo "Starting deployment of the F5 Big-IP VM..."
 cd /root/terraform/bigip
 terraform init
 terraform import azurerm_marketplace_agreement.f5 "/subscriptions/${INSTRUQT_AZURE_SUBSCRIPTION_CONSUL_SUBSCRIPTION_ID}/providers/Microsoft.MarketplaceOrdering/agreements/f5-networks/offers/f5-big-ip-good/plans/f5-bigip-virtual-edition-25m-good-hourly"
 nohup terraform apply -auto-approve 2>&1 | tee nohup.out &
 
 #panw
+echo "Starting deployment of the Palo Alto Networks VM..."
 cd /root/terraform/panw-vm
 terraform init
 nohup terraform apply -auto-approve 2>&1 | tee nohup.out &

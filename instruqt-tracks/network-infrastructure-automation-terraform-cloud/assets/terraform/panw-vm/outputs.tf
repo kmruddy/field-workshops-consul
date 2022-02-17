@@ -23,5 +23,5 @@ output "pa_username" {
 }
 
 output "pa_password" {
-  value = random_password.pafwpassword.result
+  value = nonsensitive(random_password.pafwpassword.result)
 }
