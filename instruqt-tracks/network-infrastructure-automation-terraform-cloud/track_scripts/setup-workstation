@@ -118,7 +118,6 @@ echo "Checking PANW FW"
 n=0
 until [ $n -ge 5 ]; do
   echo "Fetching PANW..."
-  echo "firewall_ip = ${terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIP}"
   firewall_ip=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIP) | tr -d '"')
   pa_username=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_username) | tr -d '"')
   pa_password=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_password) | tr -d '"')
