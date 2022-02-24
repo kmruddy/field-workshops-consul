@@ -407,9 +407,9 @@ challenges:
     ```
     terraform init
     terraform plan
-    
+
     Open the Terraform Web Console, switch to the worspace named "deploy-app-environments" and change the execution mode to "Local"
-    
+
     ```
     terraform apply -auto-approve
     ```
@@ -648,4 +648,4 @@ challenges:
     port: 80
   difficulty: basic
   timelimit: 3000
-checksum: "12235701211135611630"
+checksum: "12477954496979221615"
