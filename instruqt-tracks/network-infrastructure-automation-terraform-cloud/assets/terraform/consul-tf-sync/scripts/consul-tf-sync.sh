@@ -72,6 +72,8 @@ buffer_period {
   min = "5s"
   max = "20s"
 }
+working_dir = "/etc/consul-terraform-sync.d/sync-tasks"
+port = 8558
 
 # Consul Config Options
 consul {
@@ -85,8 +87,21 @@ vault {
 
 # Terraform Driver Options
 driver "terraform-cloud" {
-  organization = "${tfc_org}"
-  token        = "${tfc_token}"
+  organization     = "${tfc_org}"
+  token            = "${tfc_token}"
+  workspace_prefix = "cts"
+  workspaces       = {
+    tags = ["cts","app"]
+  }
+  
+  required_providers {
+    bigip = {
+      source = "F5Networks/bigip"
+    },
+    panos = {
+      source = "PaloAltoNetworks/panos"
+    }
+  }
 }
 
 ## Network Infrastructure Options
