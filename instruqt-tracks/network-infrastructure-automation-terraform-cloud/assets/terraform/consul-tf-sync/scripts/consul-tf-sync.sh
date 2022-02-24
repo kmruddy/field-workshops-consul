@@ -35,9 +35,13 @@ cat << EOF > /etc/consul.d/cts.json
 }
 EOF
 
+cat << EOF > /etc/consul.d/consul.license
+${consul_license}
+EOF
+
 #Install Consul-Terraform-Sync
-curl --silent --remote-name https://releases.hashicorp.com/consul-terraform-sync/0.5.0+ent/consul-terraform-sync_0.5.0_linux_amd64.zip
-unzip consul-terraform-sync_0.5.0_linux_amd64.zip
+curl --silent --remote-name https://releases.hashicorp.com/consul-terraform-sync/0.5.1+ent/consul-terraform-sync_0.5.1_linux_amd64.zip
+unzip consul-terraform-sync_0.5.1_linux_amd64.zip
 sudo chown root:root consul-terraform-sync
 sudo mv consul-terraform-sync /usr/local/bin/
 sudo mkdir --parents /etc/consul-tf-sync.d
@@ -72,7 +76,8 @@ buffer_period {
   min = "5s"
   max = "20s"
 }
-working_dir = "/etc/consul-terraform-sync.d/sync-tasks"
+working_dir  = "/etc/consul-terraform-sync.d/sync-tasks"
+license_path = "/etc/consul.d/consul.license"
 port = 8558
 
 # Consul Config Options

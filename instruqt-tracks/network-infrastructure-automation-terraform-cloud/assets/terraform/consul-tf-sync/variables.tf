@@ -17,3 +17,4 @@ variable "vip_internal_address" {}
 variable "consul_server_ip" {}
 variable "tfc_org" {}
 variable "tfc_token" {}
+variable "consul_license" {}
