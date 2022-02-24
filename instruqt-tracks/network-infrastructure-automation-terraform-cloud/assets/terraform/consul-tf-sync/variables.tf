@@ -15,3 +15,5 @@ variable "panos_username" {}
 variable "vault_token" {}
 variable "vip_internal_address" {}
 variable "consul_server_ip" {}
+variable "tfc_org" {}
+variable "tfc_token" {}

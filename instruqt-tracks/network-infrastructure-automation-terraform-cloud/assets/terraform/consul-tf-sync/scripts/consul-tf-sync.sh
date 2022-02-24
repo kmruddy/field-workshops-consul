@@ -36,8 +36,8 @@ cat << EOF > /etc/consul.d/cts.json
 EOF
 
 #Install Consul-Terraform-Sync
-curl --silent --remote-name https://releases.hashicorp.com/consul-terraform-sync/0.1.2/consul-terraform-sync_0.1.2_linux_amd64.zip
-unzip consul-terraform-sync_0.1.2_linux_amd64.zip
+curl --silent --remote-name https://releases.hashicorp.com/consul-terraform-sync/0.5.0+ent/consul-terraform-sync_0.5.0_linux_amd64.zip
+unzip consul-terraform-sync_0.5.0_linux_amd64.zip
 sudo chown root:root consul-terraform-sync
 sudo mv consul-terraform-sync /usr/local/bin/
 sudo mkdir --parents /etc/consul-tf-sync.d
@@ -84,18 +84,9 @@ vault {
 }
 
 # Terraform Driver Options
-driver "terraform" {
-  log = true
-  path = "/opt/consul-tf-sync.d/"
-  working_dir = "/opt/consul-tf-sync.d/"
-  required_providers {
-    bigip = {
-      source = "F5Networks/bigip"
-    },
-    panos = {
-      source = "PaloAltoNetworks/panos"
-    }
-  }
+driver "terraform-cloud" {
+  organization = "${tfc_org}"
+  token        = "${tfc_token}"
 }
 
 ## Network Infrastructure Options

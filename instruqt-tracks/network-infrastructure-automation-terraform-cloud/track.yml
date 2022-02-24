@@ -405,7 +405,12 @@ challenges:
     Begin provisioning the application in the background:
 
     ```
+    terraform init
     terraform plan
+    
+    Open the Terraform Web Console, switch to the worspace named "deploy-app-environments" and change the execution mode to "Local"
+    
+    ```
     terraform apply -auto-approve
     ```
 
@@ -480,6 +485,11 @@ challenges:
     Now it's time for Consul Terraform Sync to configure all the Network Infrastructure operations.
     ```
     cd /root/terraform/consul-tf-sync/
+    terraform init
+    ```
+    Switch to the Terraform Cloud console and swith the "provision-consul-tf-sync" workspace to be "Local" execution mode.
+
+    ```
     terraform plan
     terraform apply -auto-approve
 
