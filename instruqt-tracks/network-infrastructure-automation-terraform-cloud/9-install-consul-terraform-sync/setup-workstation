@@ -6,25 +6,35 @@ sleep 10
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_rsa
 
+# refresh Terraform Outputs
+cd /root/terraform/vnet && terraform refresh
+cd /root/terraform/consul-server/ && terraform refresh
+cd /root/terraform/vault/ && terraform refresh
+cd /root/terraform/bigip/ && terraform refresh
+cd /root/terraform/panw-vm/ && terraform refresh
+
+# configure bastion IP
 bastion_ip=$(echo $(terraform output -state /root/terraform/vnet/terraform.tfstate bastion_ip) | tr -d '"')
 echo "export bastion_ip=${bastion_ip}" >> ~/.bashrc
 
+#dirs
+set-workdir /root/terraform/consul-tf-sync/
 cd /root/terraform/consul-tf-sync/
 
 # add remote backend for Palo Alto Firewall setup
-#cat << EOF > /root/terraform/consul-tf-sync/remote_backend.tf
-#terraform {
-#  cloud {
-#    hostname = "app.terraform.io"
-#    organization = "${$ORG}"
-#    workspaces {
-#      name = "provision-consul-tf-sync"
-#    }
-#  }
-#}
-#EOF
+cat << EOF > /root/terraform/consul-tf-sync/remote_backend.tf
+terraform {
+  cloud {
+    hostname = "app.terraform.io"
+    organization = "${ORG}"
+    workspaces {
+      name = "provision-consul-tf-sync"
+    }
+  }
+}
+EOF
 
-terraform init
+# terraform init
 
 ##creds
 vault login root
@@ -36,7 +46,7 @@ bigip_admin_user=$(echo $(terraform output -state=/root/terraform/bigip/terrafor
 vip_internal_address=$(echo $(terraform output -state=/root/terraform/bigip/terraform.tfstate vip_internal_address) | tr -d '"')
 panos_mgmt_addr=$(echo $(terraform output -state=/root/terraform/panw-vm/terraform.tfstate FirewallIP) | tr -d '"')
 panos_username=$(echo $(terraform output -state=/root/terraform/panw-vm/terraform.tfstate pa_username) | tr -d '"')
-cat << EOF > /root/terraform/consul-tf-sync/terraform.tfvars
+cat << EOF > /root/terraform/consul-tf-sync/terraform.auto.tfvars
 ssh_public_key = "$(cat ~/.ssh/id_rsa.pub)"
 vip_internal_address = "${vip_internal_address}"
 bigip_mgmt_addr = "${bigip_mgmt_addr}"
@@ -46,6 +56,8 @@ panos_mgmt_addr = "${panos_mgmt_addr}"
 panos_username = "${panos_username}"
 vault_token ="${vault_token}"
 consul_server_ip = "${consul_server_ip}"
+tfc_org = "${ORG}"
+tfc_token = "${cat ~/.terraform.d/credentials.tfrc.json | jq '.credentials."app.terraform.io".token' | tr -d '"'}"
 EOF
 
 exit 0
