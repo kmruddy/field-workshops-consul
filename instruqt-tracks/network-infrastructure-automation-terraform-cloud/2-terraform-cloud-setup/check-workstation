@@ -12,10 +12,10 @@ fi
 
 if [ -z "${ORG}" ]
 then 
-    echo "No Organization found. Please enter your desired Terraform Cloud Organization: \$ORG"
+    echo "No Organization found. Please enter your desired Terraform Cloud Organization as the ORG variable."
 fi
 
 # Store the ORG in /root/.bashrc
-grep \$ORG /root/.bashrc || echo "export ORG=\"\$ORG\"" >> /root/.bashrc
+echo "export ORG=$ORG" >> /root/.bashrc
 
 exit 0

@@ -14,12 +14,9 @@ cd /root/terraform/bigip/ && terraform refresh
 cd /root/terraform/panw-vm/ && terraform refresh
 
 # configure bastion IP
-bastion_ip=$(echo $(terraform output -state /root/terraform/vnet/terraform.tfstate bastion_ip) | tr -d '"')
+cd /root/terraform/vnet/
+bastion_ip=$(echo $(terraform output bastion_ip) | tr -d '"')
 echo "export bastion_ip=${bastion_ip}" >> ~/.bashrc
-
-#dirs
-set-workdir /root/terraform/consul-tf-sync/
-cd /root/terraform/consul-tf-sync/
 
 # add remote backend for Palo Alto Firewall setup
 cat << EOF > /root/terraform/consul-tf-sync/remote_backend.tf
@@ -34,18 +31,21 @@ terraform {
 }
 EOF
 
-# terraform init
-
 ##creds
 vault login root
 vault_token=$(vault token create -field token -policy nia -period 8h -orphan)
-consul_server_ip=$(echo $(terraform output -state=/root/terraform/consul-server/terraform.tfstate consul_server_ip) | tr -d '"')
-vault_addr=$(echo $(terraform output -state=/root/terraform/vault/terraform.tfstate vault_lb) | tr -d '"')
-bigip_mgmt_addr=$(echo $(terraform output -state=/root/terraform/bigip/terraform.tfstate mgmt_ip) | tr -d '"')
-bigip_admin_user=$(echo $(terraform output -state=/root/terraform/bigip/terraform.tfstate f5_username) | tr -d '"')
-vip_internal_address=$(echo $(terraform output -state=/root/terraform/bigip/terraform.tfstate vip_internal_address) | tr -d '"')
-panos_mgmt_addr=$(echo $(terraform output -state=/root/terraform/panw-vm/terraform.tfstate FirewallIP) | tr -d '"')
-panos_username=$(echo $(terraform output -state=/root/terraform/panw-vm/terraform.tfstate pa_username) | tr -d '"')
+cd /root/terraform/consul-server/
+consul_server_ip=$(echo $(terraform output consul_server_ip) | tr -d '"')
+cd /root/terraform/vault/
+vault_addr=$(echo $(terraform output vault_lb) | tr -d '"')
+cd /root/terraform/bigip/
+bigip_mgmt_addr=$(echo $(terraform output mgmt_ip) | tr -d '"')
+bigip_admin_user=$(echo $(terraform output f5_username) | tr -d '"')
+vip_internal_address=$(echo $(terraform output vip_internal_address) | tr -d '"')
+cd /root/terraform/panw-vm/
+panos_mgmt_addr=$(echo $(terraform output FirewallIP) | tr -d '"')
+panos_username=$(echo $(terraform output pa_username) | tr -d '"')
+tfc_token=$(echo $(cat ~/.terraform.d/credentials.tfrc.json | jq '.credentials."app.terraform.io".token' | tr -d '"'))
 cat << EOF > /root/terraform/consul-tf-sync/terraform.auto.tfvars
 ssh_public_key = "$(cat ~/.ssh/id_rsa.pub)"
 vip_internal_address = "${vip_internal_address}"
@@ -54,11 +54,15 @@ bigip_admin_user = "${bigip_admin_user}"
 vault_addr = "${vault_addr}"
 panos_mgmt_addr = "${panos_mgmt_addr}"
 panos_username = "${panos_username}"
-vault_token ="${vault_token}"
+vault_token = "${vault_token}"
 consul_server_ip = "${consul_server_ip}"
 tfc_org = "${ORG}"
-tfc_token = "${cat ~/.terraform.d/credentials.tfrc.json | jq '.credentials."app.terraform.io".token' | tr -d '"'}"
-consul_license = "${CONSUL_LICENSE}
+tfc_token = "${tfc_token}"
+consul_license = "${CONSUL_LICENSE}"
 EOF
+
+#dirs
+set-workdir /root/terraform/consul-tf-sync/
+cd /root/terraform/consul-tf-sync/
 
 exit 0

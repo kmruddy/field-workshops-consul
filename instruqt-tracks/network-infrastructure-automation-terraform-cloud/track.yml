@@ -87,6 +87,10 @@ challenges:
     ```
     terraform login
     ```
+
+    Enter "yes" to accept the process, then click on the link, which will redirect you to Terraform Cloud. 
+
+    Give the created key a name, then copy the provided which will be pasted to the `shell` prompt.
   tabs:
   - title: Shell
     type: terminal
@@ -112,12 +116,9 @@ challenges:
 
     The "Terraform Code" tab contains all of the Infrastructure as Code (IaC) templates used by Terraform to build the VNETs. Feel free to look over the code!
 
-    In the `Shell` tab, deploy the Azure VNETs by running the following commands:
+    In the `Shell` tab, verify the Azure VNETs by running the following commands:
     ```
-    terraform init
-    terraform plan
-    terraform apply -auto-approve
-
+    terraform apply
     ```
 
     Their CIDR blocks are listed below:
@@ -407,8 +408,10 @@ challenges:
     ```
     terraform init
     terraform plan
+    ```
 
-    Open the Terraform Web Console, switch to the worspace named "deploy-app-environments" and change the execution mode to "Local"
+    Open the Terraform Web Console, switch to the worspace named "deploy-app-environments"
+    Change the execution mode to "Local"
 
     ```
     terraform apply -auto-approve
@@ -648,4 +651,4 @@ challenges:
     port: 80
   difficulty: basic
   timelimit: 3000
-checksum: "12477954496979221615"
+checksum: "16547130542713426284"
