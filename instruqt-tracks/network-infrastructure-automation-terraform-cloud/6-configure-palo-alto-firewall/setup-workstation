@@ -7,26 +7,23 @@ echo ">>-----------------------------<<"
 echo ">> Starting PANOS Config Setup <<"
 echo ">>-----------------------------<<"
 
-set-workdir /root/terraform/panw-config
+cd /root/terraform/vnet/
+bastion_ip=$(echo $(terraform output bastion_ip) | tr -d '"')
 
-#cd /root/terraform/bigip
-#terraform output > /info.txt
-#
-#cd /root/terraform/panw-vm
-#terraform output >> /info.txt
+cd /root/terraform/panw-vm/
+firewall_ip=$(echo $(terraform output FirewallIP) | tr -d '"')
+firewall_mgmt_ip=$(echo $(terraform output FirewallIPURL) | tr -d '"')
+pa_username=$(echo $(terraform output pa_username) | tr -d '"')
+pa_password=$(echo $(terraform output pa_password) | tr -d '"')
 
-bastion_ip=$(echo $(terraform output -state /root/terraform/vnet/terraform.tfstate bastion_ip) | tr -d '"')
-firewall_ip=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIP) | tr -d '"')
-firewall_mgmt_ip=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIPURL) | tr -d '"')
-pa_username=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_username) | tr -d '"')
-pa_password=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_password) | tr -d '"')
+cd /root/terraform/bigip/
+bigip_mgmt_url=$(echo $(terraform output mgmt_url) | tr -d '"')
+f5_username=$(echo $(terraform output f5_username) | tr -d '"')
+f5_password=$(echo $(terraform output f5_password) | tr -d '"')
 
-bigip_mgmt_url=$(echo $(terraform output -state /root/terraform/bigip/terraform.tfstate mgmt_url) | tr -d '"')
-f5_username=$(echo $(terraform output -state /root/terraform/bigip/terraform.tfstate f5_username) | tr -d '"')
-f5_password=$(echo $(terraform output -state /root/terraform/bigip/terraform.tfstate f5_password) | tr -d '"')
-
-app_fqdn=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate WebFQDN) | tr -d '"')
-app_ip=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate WebIP) | tr -d '"')
+cd /root/terraform/panw-vm/
+app_fqdn=$(echo $(terraform output WebFQDN) | tr -d '"')
+app_ip=$(echo $(terraform output WebIP) | tr -d '"')
 
 cat <<EOF > /access.md
 # Access Information
@@ -72,5 +69,9 @@ echo ""
 echo ">>-----------------------------<<"
 echo ">> PANOS Config Setup Complete <<"
 echo ">>-----------------------------<<"
+
+# set working directory
+set-workdir /root/terraform/panw-config
+cd /root/terraform/panw-config
 
 exit 0

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #check azure vnets
+cd /root/terraform/vnet/
 terraform apply -auto-approve 2>&1 | tee terraform.out
 
 exit 0

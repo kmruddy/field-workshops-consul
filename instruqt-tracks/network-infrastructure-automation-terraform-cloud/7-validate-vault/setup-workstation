@@ -1,10 +1,7 @@
 #!/bin/bash
 
-
-#nginx
-set-workdir /root/terraform/vault
-
-vault_lb=$(echo $(terraform output -state=/root/terraform/vault/terraform.tfstate vault_lb) | tr -d '"')
+cd /root/terraform/vault/
+vault_lb=$(echo $(terraform output vault_lb) | tr -d '"')
 echo "export VAULT_ADDR=http://${vault_lb}" >> ~/.bashrc
 cat << EOF > /etc/nginx/conf.d/vault.conf
 server {
@@ -20,7 +17,9 @@ server {
   access_log /var/log/nginx/vault.log;
 }
 EOF
-consul_lb=$(echo $(terraform output -state=/root/terraform/consul-server/terraform.tfstate consul_external_ip) | tr -d '"')
+
+cd /root/terraform/consul-server/
+consul_lb=$(echo $(terraform output consul_external_ip) | tr -d '"')
 echo "export CONSUL_HTTP_ADDR=http://${consul_lb}" >> ~/.bashrc
 cat << EOF > /etc/nginx/conf.d/consul.conf
 server {
@@ -39,23 +38,31 @@ EOF
 /usr/sbin/service nginx reload
 
 rm -f /access.md
-bastion_ip=$(echo $(terraform output -state /root/terraform/vnet/terraform.tfstate bastion_ip) | tr -d '"')
-firewall_ip=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIP) | tr -d '"')
-firewall_mgmt_ip=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate FirewallIPURL) | tr -d '"')
-pa_username=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_username) | tr -d '"')
-pa_password=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate pa_password) | tr -d '"')
+cd /root/terraform/vnet/
+bastion_ip=$(echo $(terraform output bastion_ip) | tr -d '"')
 
-bigip_mgmt_url=$(echo $(terraform output -state /root/terraform/bigip/terraform.tfstate mgmt_url) | tr -d '"')
-f5_username=$(echo $(terraform output -state /root/terraform/bigip/terraform.tfstate f5_username) | tr -d '"')
-f5_password=$(echo $(terraform output -state /root/terraform/bigip/terraform.tfstate f5_password) | tr -d '"')
+cd /root/terraform/panw-vm/
+firewall_ip=$(echo $(terraform output FirewallIP) | tr -d '"')
+firewall_mgmt_ip=$(echo $(terraform output FirewallIPURL) | tr -d '"')
+pa_username=$(echo $(terraform output pa_username) | tr -d '"')
+pa_password=$(echo $(terraform output pa_password) | tr -d '"')
 
-app_fqdn=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate WebFQDN) | tr -d '"')
-app_ip=$(echo $(terraform output -state /root/terraform/panw-vm/terraform.tfstate WebIP) | tr -d '"')
+cd /root/terraform/bigip/
+bigip_mgmt_url=$(echo $(terraform output mgmt_url) | tr -d '"')
+f5_username=$(echo $(terraform output f5_username) | tr -d '"')
+f5_password=$(echo $(terraform output f5_password) | tr -d '"')
+
+cd /root/terraform/panw-vm/
+app_fqdn=$(echo $(terraform output WebFQDN) | tr -d '"')
+app_ip=$(echo $(terraform output WebIP) | tr -d '"')
+
 #inital vault
 export VAULT_ADDR=http://${vault_lb}
 vault login root
-vault kv put secret/pan password=$(echo $(terraform output -state=/root/terraform/panw-vm/terraform.tfstate pa_password) | tr -d '"')
-vault kv put secret/f5 password=$(echo $(terraform output -state=/root/terraform/bigip/terraform.tfstate f5_password) | tr -d '"')
+cd /root/terraform/panw-vm/
+vault kv put secret/pan password=$(echo $(terraform output pa_password) | tr -d '"')
+cd /root/terraform/bigip/
+vault kv put secret/f5 password=$(echo $(terraform output f5_password) | tr -d '"')
 vault auth enable userpass
 vault write auth/userpass/users/operations password=Password1 policies=ops token_ttl=8h
 vault write auth/userpass/users/backend password=Password1 policies=backend token_ttl=30m
@@ -119,5 +126,9 @@ Use the following information to access the virtual appliances in this workshop.
 EOF
 
 unset VAULT_TOKEN
+
+# set working directory
+set-workdir /root/terraform/vault
+cd /root/terraform/vault/
 
 exit 0

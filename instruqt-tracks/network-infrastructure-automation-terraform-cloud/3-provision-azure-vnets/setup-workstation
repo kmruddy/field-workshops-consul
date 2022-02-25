@@ -1,6 +1,7 @@
 #!/bin/bash
 
-#assignment
+# set working directory
 set-workdir /root/terraform/vnet
+cd /root/terraform/vnet/
 
 exit 0

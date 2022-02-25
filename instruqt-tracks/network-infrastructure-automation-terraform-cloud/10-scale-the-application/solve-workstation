@@ -5,6 +5,7 @@ echo ">>"
 echo ">> Scaling down app. Have a nice day! :)"
 echo ">>"
 
+cd /root/terraform/app/
 terraform apply -var app_count=1 -var web_count=1 -auto-approve
 
 sleep 30

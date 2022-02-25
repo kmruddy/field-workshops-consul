@@ -1,4 +1,8 @@
 #!/bin/bash -l
 set -e
 
+# set woring directory
+set-workdir /root/terraform
+cd /root/terraform/
+
 exit 0

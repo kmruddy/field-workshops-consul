@@ -3,7 +3,8 @@
 echo "Checking App Deployment..."
 
 #rg
-rg=$(echo $(terraform output -state /root/terraform/vnet/terraform.tfstate resource_group_name) | tr -d '"')
+cd /root/terraform/vnet/
+rg=$(echo $(terraform output resource_group_name) | tr -d '"')
 
 #check web
 status=$(az vmss show -g "${rg}" --name web-vmss | jq -r '.provisioningState')
