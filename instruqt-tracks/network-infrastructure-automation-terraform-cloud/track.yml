@@ -4,7 +4,7 @@ type: track
 title: Network Infrastructure Automation - Terraform Cloud - RuddyDemo
 teaser: Automate the provisioning and ongoing management of network infrastructure.
 description: In this workshop you'll learn how to automate the provisioning and management
-  of traditional network infrastructure using Terraform, Consul, and Consul Terraform
+  of traditional network infrastructure using Terraform Cloud, Consul, and Consul Terraform
   Sync. Eliminate exposure to operational overhead and security risk while accelerating
   the deployment and scaling of applications and services.
 icon: https://raw.githubusercontent.com/hashicorp/field-workshops-consul/master/instruqt-tracks/network-infrastructure-automation/assets/images/NIA-CTS-Icon.png
@@ -69,39 +69,7 @@ challenges:
     url: https://htmlpreview.github.io/?https://raw.githubusercontent.com/hashicorp/field-workshops-consul/master/instruqt-tracks/network-infrastructure-automation/assets/images/1.NIA-Workshop-NetOps_Traffic.html
   difficulty: basic
   timelimit: 300
-- slug: 2-terraform-cloud-setup
-  id: xg0r4tgrqeo5
-  type: challenge
-  title: ☁️ Terraform Cloud Setup
-  teaser: |
-    Terraform Cloud offers unlimited free Terraform state storage for users. Safeguard your state files by storing them remotely in Terraform Cloud.
-  notes:
-  - type: text
-    contents: Terraform Cloud remote state storage is free for all users.
-  assignment: |-
-    Sign up for a free Terraform Cloud account at the following URL:
-    https://app.terraform.io/signup/account
-    If you already have an account you can simply sign in with your existing credentials.
-
-    Use the terraform `login` command to set the credentials file within the `Shell` tab:
-    ```
-    terraform login
-    ```
-
-    Enter "yes" to accept the process, then click on the link, which will redirect you to Terraform Cloud. 
-
-    Give the created key a name, then copy the provided which will be pasted to the `shell` prompt.
-  tabs:
-  - title: Shell
-    type: terminal
-    hostname: workstation
-  - title: Code Editor
-    type: code
-    hostname: workstation
-    path: /root
-  difficulty: basic
-  timelimit: 1800
-- slug: 3-provision-azure-vnets
+- slug: 2-provision-azure-vnets
   id: ybubfuc5gtw9
   type: challenge
   title: Provision Azure VNETs
@@ -154,7 +122,7 @@ challenges:
     port: 80
   difficulty: basic
   timelimit: 3000
-- slug: 4-provision-core-services
+- slug: 3-provision-core-services
   id: cugc1wgjhou2
   type: challenge
   title: Provision Core Services
@@ -212,7 +180,7 @@ challenges:
     port: 80
   difficulty: basic
   timelimit: 3000
-- slug: 5-provision-network-infra
+- slug: 4-provision-network-infra
   id: qy84rstub4h5
   type: challenge
   title: Provision F5 BIG-IP & Palo Alto Firewall
@@ -271,7 +239,7 @@ challenges:
     port: 80
   difficulty: basic
   timelimit: 3000
-- slug: 6-configure-palo-alto-firewall
+- slug: 5-configure-palo-alto-firewall
   id: juznamgmj4sj
   type: challenge
   title: Configure Palo Alto Firewall
@@ -327,7 +295,7 @@ challenges:
     port: 80
   difficulty: basic
   timelimit: 300
-- slug: 7-validate-vault
+- slug: 6-validate-vault
   id: oavrlmyk4jdi
   type: challenge
   title: Validate Vault & Consul
@@ -385,6 +353,53 @@ challenges:
     port: 80
   difficulty: basic
   timelimit: 3000
+- slug: 7-terraform-cloud-setup
+  id: xg0r4tgrqeo5
+  type: challenge
+  title: ☁️ Terraform Cloud Setup
+  teaser: |
+    Terraform Cloud offers unlimited free Terraform state storage for users. Safeguard your state files by storing them remotely in Terraform Cloud.
+  notes:
+  - type: text
+    contents: Terraform Cloud remote state storage is free for all users.
+  assignment: |-
+    Sign up for a free Terraform Cloud account at the following URL:
+    https://app.terraform.io/signup/account
+    If you already have an account you can simply sign in with your existing credentials.
+
+    Use the terraform `login` command to set the credentials file within the `Shell` tab:
+    ```
+    terraform login
+    ```
+
+    Enter `yes` to accept the process. 
+
+    Click on the link, which will redirect you to a page on Terraform Cloud where you will be asked to create a user token. This token will be used for the next several steps of the lab.
+
+    Give the created key a name, then copy the provided key and paste it to the `shell` prompt. If successful, you should see your username and a Terraform logo.
+
+    There are two administrative tasks to end this step of the lab. First is to store the Terraform Cloud-based Organization name that you're using in an environmental variable.
+    ```
+    ORG=<Org Name>
+    ```
+
+    Example, if your Terraform Cloud Organization name is "MyOrg" then you would enter: `ORG=MyOrg`
+
+    Second is to store a temporary Consul Enterprise license in an environmental variable. You should receive this from the lab administrator.
+    ```
+    CONSUL_LICENSE=<Consul License>
+    ```
+
+  tabs:
+  - title: Shell
+    type: terminal
+    hostname: workstation
+  - title: Code Editor
+    type: code
+    hostname: workstation
+    path: /root
+  difficulty: basic
+  timelimit: 1800
 - slug: 8-deploy-app-environments
   id: xyb3xy6i4nzh
   type: challenge
@@ -407,13 +422,15 @@ challenges:
 
     ```
     terraform init
+    ```
+
+    The Terraform configuration has been set to store the state file in Terraform Cloud. 
+    To continue using Terraform locally in the `Shell` tab, open the Terraform Cloud Web Console, switch to the worspace named "deploy-app-environments"
+    Change the execution mode to "Local" by clicking on the "Settings" dropdown menu and selecting "General". Under "Execution Mode" choose "Local" then click "Save Settings"
+
+    Return to the `Shell` tab and run the following commands to deploy the application:
+    ```
     terraform plan
-    ```
-
-    Open the Terraform Web Console, switch to the worspace named "deploy-app-environments"
-    Change the execution mode to "Local"
-
-    ```
     terraform apply -auto-approve
     ```
 
@@ -490,12 +507,14 @@ challenges:
     cd /root/terraform/consul-tf-sync/
     terraform init
     ```
-    Switch to the Terraform Cloud console and swith the "provision-consul-tf-sync" workspace to be "Local" execution mode.
 
+    We will again being performing Terraform tasks locally but taking advantage of Terraform Cloud for state storage.
+    Open the Terraform Cloud web console, open the "provision-consul-tf-sync" workspace, and set the execution mode to be "Local".
+
+    Switch back to the `Shell` tab and perform the following commands to deploy Consul Terraform Sync:
     ```
     terraform plan
     terraform apply -auto-approve
-
     ```
 
     When completed, you can connect to the CTS image:
@@ -517,6 +536,8 @@ challenges:
     Look over the Palo Alto & BIG-IP configurations again, per the steps above. Note that their configurations have been updated!
 
     Next, navigate to the `App` tab. The application is now available through the Firewall and is Load-balanced. You may need to refresh the tab.
+
+    Then, open the Terraform Cloud web console. There are two new workspaces prefixed with "cts" and also featuring "cts" workspace tags. Feel free to explore the workspaces to see how Consul Terraform Sync is using Terraform Cloud for remote operations, state storage, and more. 
 
     Lastly, navigate back to the 'Current Lab Setup' tab and marvel at the beauty of Network Infrastructure Automation. You did this!
 
@@ -651,4 +672,4 @@ challenges:
     port: 80
   difficulty: basic
   timelimit: 3000
-checksum: "16547130542713426284"
+checksum: "9296040390360522997"

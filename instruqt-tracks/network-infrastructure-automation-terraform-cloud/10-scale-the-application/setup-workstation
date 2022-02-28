@@ -9,5 +9,5 @@ web_server=$(curl -s $CONSUL_HTTP_ADDR/v1/catalog/service/web | jq -r '.[0].Addr
 echo "export web_server=${web_server}" >> ~/.bashrc
 
 #dirs
-set-workdir /root/terraform/consul-tf-sync/
-cd /root/terraform/consul-tf-sync/
+set-workdir /root/terraform/app/
+cd /root/terraform/app/
