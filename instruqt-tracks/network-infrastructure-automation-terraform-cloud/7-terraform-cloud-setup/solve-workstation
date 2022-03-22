@@ -1,11 +1,4 @@
 #!/bin/bash -l
 set -e
 
-# Enable bash history
-HISTFILE=/root/.bash_history
-set -o history
-
-# Wipe the bash history
-history -c
-
 exit 0

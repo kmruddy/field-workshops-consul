@@ -4,9 +4,9 @@ type: track
 title: Network Infrastructure Automation - Terraform Cloud - RuddyDemo
 teaser: Automate the provisioning and ongoing management of network infrastructure.
 description: In this workshop you'll learn how to automate the provisioning and management
-  of traditional network infrastructure using Terraform Cloud, Consul, and Consul Terraform
-  Sync. Eliminate exposure to operational overhead and security risk while accelerating
-  the deployment and scaling of applications and services.
+  of traditional network infrastructure using Terraform Cloud, Consul, and Consul
+  Terraform Sync. Eliminate exposure to operational overhead and security risk while
+  accelerating the deployment and scaling of applications and services.
 icon: https://raw.githubusercontent.com/hashicorp/field-workshops-consul/master/instruqt-tracks/network-infrastructure-automation/assets/images/NIA-CTS-Icon.png
 tags:
 - consul
@@ -372,7 +372,7 @@ challenges:
     terraform login
     ```
 
-    Enter `yes` to accept the process. 
+    Enter `yes` to accept the process.
 
     Click on the link, which will redirect you to a page on Terraform Cloud where you will be asked to create a user token. This token will be used for the next several steps of the lab.
 
@@ -389,7 +389,6 @@ challenges:
     ```
     CONSUL_LICENSE=<Consul License>
     ```
-
   tabs:
   - title: Shell
     type: terminal
@@ -424,7 +423,7 @@ challenges:
     terraform init
     ```
 
-    The Terraform configuration has been set to store the state file in Terraform Cloud. 
+    The Terraform configuration has been set to store the state file in Terraform Cloud.
     To continue using Terraform locally in the `Shell` tab, open the Terraform Cloud Web Console, switch to the worspace named "deploy-app-environments"
     Change the execution mode to "Local" by clicking on the "Settings" dropdown menu and selecting "General". Under "Execution Mode" choose "Local" then click "Save Settings"
 
@@ -537,7 +536,7 @@ challenges:
 
     Next, navigate to the `App` tab. The application is now available through the Firewall and is Load-balanced. You may need to refresh the tab.
 
-    Then, open the Terraform Cloud web console. There are two new workspaces prefixed with "cts" and also featuring "cts" workspace tags. Feel free to explore the workspaces to see how Consul Terraform Sync is using Terraform Cloud for remote operations, state storage, and more. 
+    Then, open the Terraform Cloud web console. There are two new workspaces prefixed with "cts" and also featuring "cts" workspace tags. Feel free to explore the workspaces to see how Consul Terraform Sync is using Terraform Cloud for remote operations, state storage, and more.
 
     Lastly, navigate back to the 'Current Lab Setup' tab and marvel at the beauty of Network Infrastructure Automation. You did this!
 
@@ -672,4 +671,4 @@ challenges:
     port: 80
   difficulty: basic
   timelimit: 3000
-checksum: "9296040390360522997"
+checksum: "8663832898760995719"
