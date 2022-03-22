@@ -10,13 +10,18 @@ else
     terraform login 
 fi
 
-if [ -z "${ORG}" ]
+if [ -z "$ORG" ]
 then 
     echo "No Organization found. Please enter your desired Terraform Cloud Organization as the ORG variable."
 fi
 
 # Store the ORG in /root/.bashrc
 echo "export ORG=$ORG" >> /root/.bashrc
+
+if [ -z "$CONSUL_LICENSE" ]
+then 
+    echo "No Organization found. Please enter your desired Terraform Cloud Organization as the ORG variable."
+fi
 
 # Store the CONSUL_LICENSE in /root/.bashrc
 echo "export CONSUL_LICENSE=$CONSUL_LICENSE" >> /root/.bashrc

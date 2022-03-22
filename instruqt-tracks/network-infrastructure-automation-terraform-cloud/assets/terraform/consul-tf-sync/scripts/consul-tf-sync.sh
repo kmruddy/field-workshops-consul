@@ -94,8 +94,8 @@ vault {
 driver "terraform-cloud" {
   organization     = "${tfc_org}"
   token            = "${tfc_token}"
-  workspace_prefix = "cts"
   workspaces       = {
+    prefix = "cts"
     tags = ["cts","app"]
   }
   
@@ -120,9 +120,7 @@ terraform_provider "bigip" {
 
 # Palo Alto Workflow Options
 terraform_provider "panos" {
-  alias = "panos1"
   hostname = "${panos_mgmt_addr}"
-#  api_key  = "<api_key>"
   username = "${panos_username}"
   password = "{{ with secret \"secret/pan\" }}{{ .Data.data.password }}{{ end }}"
 }
@@ -133,18 +131,22 @@ terraform_provider "panos" {
 task {
   name = "F5-BIG-IP-Load-Balanced-Web-Service"
   description = "Automate F5 BIG-IP Pool Member Ops for Web Service"
-  source = "f5devcentral/app-consul-sync-nia/bigip"
+  module = "f5devcentral/app-consul-sync-nia/bigip"
   providers = ["bigip"]
-  services = ["web"]
+  condition "services" {
+    names = ["web"]
+  }
 }
 
 # Firewall operations task
 task {
   name = "DAG_Web_App"
   description = "Automate population of dynamic address group"
-  source = "PaloAltoNetworks/ag-dag-nia/panos"
-  providers = ["panos.panos1"]
-  services = ["web"]
+  module = "PaloAltoNetworks/ag-dag-nia/panos"
+  providers = ["panos"]
+  condition "services" {
+    names = ["web"]
+  }
   variable_files = ["/etc/consul-tf-sync.d/panos.tfvars"]
 }
 EOF
