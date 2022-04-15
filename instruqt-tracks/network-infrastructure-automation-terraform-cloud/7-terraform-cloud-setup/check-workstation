@@ -10,20 +10,24 @@ else
     terraform login 
 fi
 
-if [ -z "$ORG" ]
+# Check for organization variable
+if [ -z "${ORG}" ]
 then 
-    echo "No Organization found. Please enter your desired Terraform Cloud Organization as the ORG variable."
+    fail-message "No Organization found. Please enter your desired Terraform Cloud Organization as the ORG variable."
+    exit 1
+else
+    # Store the ORG in ~/.bashrc
+    echo "export ORG=${ORG}" >> ~/.bashrc
 fi
 
-# Store the ORG in /root/.bashrc
-echo "export ORG=$ORG" >> /root/.bashrc
-
-if [ -z "$CONSUL_LICENSE" ]
+# Check for consul license variable
+if [ -z "${CONSUL_LICENSE}" ]
 then 
-    echo "No Organization found. Please enter your desired Terraform Cloud Organization as the ORG variable."
+    fail-message "No Consul license found. Please enter your provided Consul license as the CONSUL_LICENSE variable."
+    exit 1
+else
+    # Store the CONSUL_LICENSE in ~/.bashrc
+    echo "export CONSUL_LICENSE=${CONSUL_LICENSE}" >> ~/.bashrc
 fi
-
-# Store the CONSUL_LICENSE in /root/.bashrc
-echo "export CONSUL_LICENSE=$CONSUL_LICENSE" >> /root/.bashrc
 
 exit 0
