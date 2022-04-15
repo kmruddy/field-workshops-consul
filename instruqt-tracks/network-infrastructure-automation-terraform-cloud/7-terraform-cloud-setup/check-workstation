@@ -18,7 +18,7 @@ if [ "${ORGNAME}" = "export ORG=" ]; then
 fi
 
 # Check for ORG stored in bashrc 
-CLICENSE=$(echo $(tail -1 ~/.bashrc)
+CLICENSE=$(echo $(tail -1 ~/.bashrc))
 if [ "${CLICENSE}" = "export CONSUL_LICENSE=" ]; then
   fail-message "Consul license variable (CONSUL_LICENSE) not found in bashrc file."
   exit 1
