@@ -389,6 +389,12 @@ challenges:
     ```
     CONSUL_LICENSE=<Consul License>
     ```
+
+    Lastly, store these environmental variables in your bash profile with the following commands:
+    ```
+    echo "export ORG=${ORG}" >> ~/.bashrc
+    echo "export CONSUL_LICENSE=${CONSUL_LICENSE}" >> ~/.bashrc
+    ```
   tabs:
   - title: Shell
     type: terminal
@@ -671,4 +677,4 @@ challenges:
     port: 80
   difficulty: basic
   timelimit: 3000
-checksum: "17690861983574725133"
+checksum: "17770138835756536304"
