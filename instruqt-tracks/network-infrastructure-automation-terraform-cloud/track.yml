@@ -374,7 +374,7 @@ challenges:
 
     Enter `yes` to accept the process.
 
-    Click on the link, or switch to the Terraform Cloud tab, which will redirect you to a page on Terraform Cloud where you will be asked to create a user token. This token will be used for the next several steps of the lab.
+    Click on the link which will redirect you to a page on Terraform Cloud where you will be asked to create a user token. This token will be used for the next several steps of the lab.
 
     Give the created key a name, then copy the provided key and paste it to the `shell` prompt. If successful, you should see your username and a Terraform logo.
 
@@ -399,9 +399,6 @@ challenges:
   - title: Shell
     type: terminal
     hostname: workstation
-  - title: Terraform Cloud
-    type: website
-    url: https://app.terraform.io/app/settings/tokens?source=terraform-login
   - title: Code Editor
     type: code
     hostname: workstation
@@ -564,9 +561,6 @@ challenges:
   - title: Shell
     type: terminal
     hostname: workstation
-  - title: Terraform Cloud
-    type: website
-    url: https://app.terraform.io/app/organizations
   - title: Access Info
     type: code
     hostname: workstation
@@ -657,9 +651,6 @@ challenges:
   - title: Shell
     type: terminal
     hostname: workstation
-  - title: Terraform Cloud
-    type: website
-    url: https://app.terraform.io/app/organizations
   - title: Access Info
     type: code
     hostname: workstation
