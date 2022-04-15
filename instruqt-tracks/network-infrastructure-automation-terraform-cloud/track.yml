@@ -374,7 +374,7 @@ challenges:
 
     Enter `yes` to accept the process.
 
-    Click on the link, which will redirect you to a page on Terraform Cloud where you will be asked to create a user token. This token will be used for the next several steps of the lab.
+    Click on the link, or switch to the Terraform Cloud tab, which will redirect you to a page on Terraform Cloud where you will be asked to create a user token. This token will be used for the next several steps of the lab.
 
     Give the created key a name, then copy the provided key and paste it to the `shell` prompt. If successful, you should see your username and a Terraform logo.
 
@@ -399,6 +399,9 @@ challenges:
   - title: Shell
     type: terminal
     hostname: workstation
+  - title: Terraform Cloud
+    type: website
+    url: https://app.terraform.io/app/settings/tokens?source=terraform-login
   - title: Code Editor
     type: code
     hostname: workstation
@@ -429,8 +432,8 @@ challenges:
     terraform init
     ```
 
-    The Terraform configuration has been set to store the state file in Terraform Cloud.
-    To continue using Terraform locally in the `Shell` tab, open the Terraform Cloud Web Console, switch to the worspace named "deploy-app-environments"
+    The Terraform configuration has been set to securely store the state file in Terraform Cloud.
+    To continue using Terraform locally in the `Shell` tab, open the Terraform Cloud tab, and switch to the worspace named "deploy-app-environments"
     Change the execution mode to "Local" by clicking on the "Settings" dropdown menu and selecting "General". Under "Execution Mode" choose "Local" then click "Save Settings"
 
     Return to the `Shell` tab and run the following commands to deploy the application:
@@ -452,6 +455,12 @@ challenges:
     type: code
     hostname: workstation
     path: /root/terraform/app
+  - title: Shell
+    type: terminal
+    hostname: workstation
+  - title: Terraform Cloud
+    type: website
+    url: https://app.terraform.io/app/
   - title: Access Info
     type: code
     hostname: workstation
@@ -471,9 +480,6 @@ challenges:
     hostname: workstation
     path: /
     port: 80
-  - title: Shell
-    type: terminal
-    hostname: workstation
   difficulty: basic
   timelimit: 3000
 - slug: 9-install-consul-terraform-sync
@@ -514,7 +520,7 @@ challenges:
     ```
 
     We will again being performing Terraform tasks locally but taking advantage of Terraform Cloud for state storage.
-    Open the Terraform Cloud web console, open the "provision-consul-tf-sync" workspace, and set the execution mode to be "Local".
+    Open the Terraform Cloud tab, open the "provision-consul-tf-sync" workspace, and set the execution mode to be "Local".
 
     Switch back to the `Shell` tab and perform the following commands to deploy Consul Terraform Sync:
     ```
@@ -558,6 +564,9 @@ challenges:
   - title: Shell
     type: terminal
     hostname: workstation
+  - title: Terraform Cloud
+    type: website
+    url: https://app.terraform.io/app/organizations
   - title: Access Info
     type: code
     hostname: workstation
@@ -648,9 +657,9 @@ challenges:
   - title: Shell
     type: terminal
     hostname: workstation
-  - title: Shell
-    type: terminal
-    hostname: workstation
+  - title: Terraform Cloud
+    type: website
+    url: https://app.terraform.io/app/organizations
   - title: Access Info
     type: code
     hostname: workstation
@@ -677,4 +686,4 @@ challenges:
     port: 80
   difficulty: basic
   timelimit: 3000
-checksum: "17770138835756536304"
+checksum: "9578958487202120422"
