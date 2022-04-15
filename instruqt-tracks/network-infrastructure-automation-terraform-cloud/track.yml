@@ -389,6 +389,13 @@ challenges:
     ```
     CONSUL_LICENSE=<Consul License>
     ```
+
+    Lastly, store these environmental variables in your bash profile with the following commands: 
+    ```
+    echo "export ORG=${ORG}" >> ~/.bashrc
+    echo "export CONSUL_LICENSE=${CONSUL_LICENSE}" >> ~/.bashrc
+    ```
+
   tabs:
   - title: Shell
     type: terminal
